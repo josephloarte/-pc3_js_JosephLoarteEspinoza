@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 
-app.use(express.static('public'));
-
 app.get('/api/universidades', async (req, res) => {
   try {
     const q = (req.query.q || '').toLowerCase();

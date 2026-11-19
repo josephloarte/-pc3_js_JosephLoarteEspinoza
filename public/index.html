@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universidades del Perú</title>
+  <style>
+    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 0 20px; }
+    input { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 20px; box-sizing: border-box; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; gap: 15px; }
+    a { color: #0066cc; text-decoration: none; white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <h2>Buscador de Universidades (Perú)</h2>
+  <input type="text" id="buscador" placeholder="Escribe el nombre de una universidad...">
+  <ul id="lista"></ul>
+
+  <script>
+    const buscador = document.getElementById('buscador');
+    const lista = document.getElementById('lista');
+
+    async function buscar(texto = '') {
+      const res = await fetch(`/api/universidades?q=${encodeURIComponent(texto)}`);
+      const universidades = await res.json();
+      lista.innerHTML = universidades.map(u =>
+        `<li><span>${u.name}</span><a href="${u.web_pages[0]}" target="_blank">${u.domains[0]}</a></li>`
+      ).join('');
+    }
+
+    buscador.addEventListener('input', (e) => buscar(e.target.value));
+    buscar();
+  </script>
+</body>
+</html>
